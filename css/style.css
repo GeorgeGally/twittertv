@@ -1,0 +1,172 @@
+body { 
+	background: #fff;
+	font-family: Helvetica, arial, serif;
+	color: #000; font-size: 16px;
+	margin: 0;
+	padding: 0;	
+	overflow:hidden;
+	}
+
+canvas { border: none; margin: 0;}
+
+.canvas_holder {
+	//margin: 0 auto 0 auto;
+	width: 100%;
+}
+
+.button {
+	background: #29A9E1;
+	border-radius: 4px;
+	width: 120px;
+	height: 28px;
+	padding: 5px 6px 8px 6px;
+	color: #FFF;
+	text-decoration: none;
+	font-size: 14px;
+	display: inline-block;
+	opacity: 0.8;
+	text-align: center;
+	cursor: pointer;
+	border: none;
+}
+
+.listen.button {
+	background: #F2722A;
+	display: none;
+	color: #fff;
+}
+
+.button:hover {
+	background: #29A9E1;
+	color: #fff;
+}
+
+.button.stop:hover {
+	background: #F2722A;
+	color: #fff;
+}
+	.button.pause:hover {
+		background: #29A9E1;
+		color: #fff;
+	}
+
+	.mute { 
+		position: fixed !important;
+		bottom: 3%;
+		right: 2%;
+		float: right;
+		color: #fff;
+		;}
+
+.mike_on_permission {
+/*display: none; */
+background: #29A9E1;
+/* border-radius: 4px; */
+width: 100%;
+height: 100%;
+min-height: 600px;
+color: #FFF;
+text-decoration: none;
+font-size: 16px;
+font-weight: 100;
+/* display: inline-block; */
+opacity: 0.95;
+z-index: 1;
+position: fixed;
+z-index: 111;
+text-align: center;
+}
+
+a {color: #F000D4 !important;}
+
+.content-width {
+padding: 4%;
+}
+
+.clear{clear:both;}
+
+#floater	{float:left; height:240px; margin-bottom:-120px;}
+
+#permission_content	{clear:both; height:240px; position:relative;}
+
+	.intro {
+		display: none;
+		background: #F2722A;
+		margin: 60% auto 0 auto;
+		padding: 8px 10px 15px 10px;
+		border-radius: 4px;
+		width: 340px;
+		height: 11px;
+		color: #FFF;
+		text-decoration: none;
+		font-size: 16px;
+		display: block;
+		opacity: 0.8;
+		z-index: 1;
+		text-align: center;
+	}
+/*
+@media only screen 
+and (max-width : 400px) {
+canvas {
+  width: 300px;
+}
+.canvas_holder {
+width: 300px;
+}
+}
+
+
+@media only screen 
+and (min-width : 401px) and (max-width : 620px) {
+canvas {
+  width: 400px !important;
+}
+.canvas_holder {
+width: 380px !important;
+}
+.content-width {
+padding: 1%;
+}
+}
+
+
+@media only screen 
+and (max-width : 621px) and (max-width : 884px) {
+canvas {
+  width: 580px;
+}
+.canvas_holder {
+width: 580px;
+}
+.content-width {
+padding: 2%;
+}
+}
+
+@media only screen 
+and (min-width : 621px) and (max-width : 885px) {
+canvas {
+  width: 600px;
+}
+.canvas_holder {
+width: 600px;
+}
+.content-width {
+padding: 3%;
+}
+}
+
+	@media only screen 
+and (min-width : 885px) {
+canvas {
+  width: 800px;
+  margin: 0 auto 0 auto;
+}
+.canvas_holder {
+width: 800px;
+}
+}
+*/
+
+

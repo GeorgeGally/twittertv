@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TwitterTV</title>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js" type="text/javascript"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+        <script type="text/javascript" src="scripts/utils.js"></script>
+<link rel="stylesheet" href="css/normalize.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/custom.css" type="text/css" media="screen" />
+<script type="text/javascript" src="js/share.js"></script> 
+<script src="//twemoji.maxcdn.com/twemoji.min.js"></script>
+<script src='js/autolink.js'></script>
+<script src='js/creative.js'></script>
+<script src='js/tailorfit.js'></script>
+<meta property="og:site_name" content="Radarboy Lab"/>
+<meta property="og:url" content="http://www.radarboy.com/lab/xxxchristmas"/>
+<meta property="og:title" content="TwitterTV"/>
+<meta property="og:image" content="http://www.radarboy.com/lab/xxxchristmas/images/bambi.png"/>
+ <meta name="author" content="George Gally" />
+<meta name="Copyright" content="Copyright (c) Radarboy" />
+<meta name="keywords" content="Rule 34, Rules of the Internet, Twitter, Visualisation" />
+<link href='https://fonts.googleapis.com/css?family=Lato:400,700,900' rel='stylesheet' type='text/css'>
+
+<script src="js/fittext.js"></script>
+
+<style>
+body {
+    background: #000; 
+    overflow: hidden;
+}
+
+#container {
+        margin: 40px 20px 40px 40px;
+}
+
+#pic-holder {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+
+#pic-holder img{
+    vertical-align: middle;
+    overflow: hidden;
+    max-width:100%;
+max-height:100%;
+}
+
+.pic-holder {
+    float: left; 
+    display: inline-block; 
+    background: #fff; 
+    height: 140px; 
+    width: 240px;
+    overflow: hidden;
+    font-family: helvetica, arial;
+    padding: 0px;
+    margin: 0px;
+    font-size: 12px;
+    font-weight: bold;
+    background-blend-mode: luminosity;
+    box-shadow: rgba(0, 0, 0, 0.1) 1px 1px 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+.pic-holder:hover {
+    box-shadow: rgba(0,0,0,.2) 1px 2px 2px;
+}
+
+.result {
+    float: left;
+    margin: 4px;
+    height: 140px;
+}
+
+.pic {
+    height: 140px;
+    overflow: hidden;
+    width: 240px;
+    display: inline-block;
+    margin-bottom: 2px;
+}
+
+.result img {
+    max-width: 60%;
+    min-height: 140px;
+    min-width: 240px; 
+}
+
+h1 {
+    text-align: center;
+}
+
+.highlight {
+    color: green;
+    text-decoration: underline;
+}
+
+#controls {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#profile_img img{
+    display: inline-block; 
+    margin-right: 12px; 
+    margin-bottom: 12px; 
+    float:left;
+    width: 48px;
+    height: 48px;
+    background: #ddd;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+#profile {
+    display: block;
+    height: 60px;
+}
+
+#intro {
+    background: rgba(255,255,255,.85); 
+    width: 80%;
+    margin: 0 10% 0 10%;
+    padding: 20px 40px 40px 20px;
+    font-weight: 100;
+    font-family: Helvetica, arial !important; 
+    margin-top: 18%;
+    border: 1px #000 solid;
+    font-size: 18px;
+}
+
+.hidden { 
+    font-family: helvetica, arial;
+    font-size: 20px;
+    font-weight: bold;
+    left: 0px;
+    top: -20px;
+    height: 550px;
+    width: 1100px;
+    padding: 0%;
+    color: #fff;
+    background: #000;
+    z-index: 1000;
+    display: none;
+}
+.canvas_holder {
+    /*display: none;*/
+}
+
+#date { 
+    font-size: 11px;
+    color: #ddd;
+    margin-top: 10px;
+}
+
+.word {
+    z-index: 100;
+    position: absolute;
+    top: 0px;
+    background: #fff;
+    width: 100%;
+    padding: 6px;
+    color: #000;
+    font-weight: normal;
+}
+
+.tweet_box {
+    display: none;
+    padding: 30px;
+    position: fixed;
+    z-index: 99;
+    width: 427px;
+    height: 228px;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(255,255,255, 0.95);
+    border-radius: 5px;
+    color: #000;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+.info_box {
+    /*background: rgba(255, 255, 255, 0.9);*/
+    background: #fff;
+    color: #000;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+
+    display: inline-block;
+    overflow: hidden;
+
+}
+.info_box {
+    margin-top: 100px;
+    width: 100%;
+    background: #fff;
+    color: #000;
+    min-height: 650px;
+    overflow: none;
+
+    /*text-shadow: 2px 2px #fff;*/
+
+}
+ .info_box, .info_box a {
+    font-size: 16px;   
+ }
+ .infoboxholder {
+    padding: 40px;
+ }
+
+a .screen_name {
+    font-size: 15px;
+    color: #ddd;
+}
+a .screen_name:hover {
+    font-size: 15px;
+    
+}
+.tweet_text,.tweet_text a { 
+font-size: 26px;
+font-weight: 300;
+line-height: 32px;
+letter-spacing: .01em;
+letter-spacing: .01em;}
+
+
+ img.emoji {
+   height: 1.1em;
+   width: 1.1em;
+   margin: 0 .05em 0 .1em;
+   vertical-align: -0.1em;
+}
+
+
+.tint {
+  position: relative;
+  float: left;
+/*  margin-right: 20px;
+  margin-bottom: 20px;*/
+  cursor: pointer;
+
+}
+
+.tint:before {
+  /*content: "";*/
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,255,255, 0.5);
+  transition: all .3s linear;
+}
+
+.tint:hover:before { background: none; }
+
+.t2:before { background: rgba(0,0,255, 0.1); }
+.t3:before { background: rgba(255,0,0, 0.3); }
+.t4:before { background: rgba(0,255,0, 0.5); }
+.t5:before { background: rgba(255,0,240, 0.5); }
+.t6:before { background: rgba(255,102,0, 0.6); }
+#container2 {
+    background: #fff;
+    padding: 35px;
+    width: 100%;
+    font-weight: normal !important;
+    font-family: helvetica, arial;
+}
+.entypo-twitter, .entypo-facebook, .entypo-gplus{
+    background: #fff;
+}
+.entypo-twitter:hover, .entypo-facebook:hover, .entypo-gplus:hover{
+    background: #fff;
+    color: #0077a1;
+}
+a {
+color: #ff0000 !important;
+}
+
+#headline_holder {
+    font-size: 300px;
+    text-align: center;
+    width: 100%;
+    z-index: 99;
+    position: absolute;
+    top: 63%;
+    margin: -15% 0 0 0%;
+    color: #FFFFCC;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: -5px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+#headline {
+     width: 100%;
+     height: 100%;
+     margin: auto
+}
+</style>
+</head>
+
+<body>
+    
+    <div id="header">
+        <div id="btnShare"></div>
+    </div>
+
+    <div class="tweet_box" >
+        <div id="profile_img">&nbsp;</div>
+        <div id="profile">Loading...</div>
+        <div id="info">&nbsp;</div>
+        <div id="date">&nbsp;</div>
+    </div>
+
+    <div id="headline_holder">
+        <div id="headline"></div>
+    </div>
+    <div id="pic-holder"></div>
+
+        <div class="clear"></div>
+
+    <script type="text/javascript" src="app.js"></script>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-49426919-3', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
+</body>
+</html>
