@@ -113,6 +113,7 @@ searchWord = function(txt){
         //console.log(img);
         img =  '<img src=' + img + ' ">';
         $('#pic-holder').html(img);
+        reverseSearchAPI(img);
         //   $('#pic-holder >img').tailorfit({
         //         maxWidth  : w,
         //         maxHeight : h,
@@ -126,6 +127,58 @@ searchWord = function(txt){
       }
    });
   
+}
+
+
+reverseSearchAPI = function(img){
+  
+  console.log("reverseSearchAPI");
+
+    // var key = "5ee4b81572a244fe92c92544f83ccc55";
+    var key = "d701e77a5a5f45bb83c3fcb9d53700e1";
+  
+     var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+
+                console.log(this.response, typeof this.response);
+
+                var response = document.querySelector('#response');
+                var img = new Image();
+                var url = window.URL || window.webkitURL;
+                img.src = url.createObjectURL(this.response);
+                response.appendChild(img);
+              }
+            }
+            xhr.open('POST', 'https://api.projectoxford.ai/vision/v1.0/generateThumbnail?width=5&height=5&smartCropping=true');
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.setRequestHeader("Ocp-Apim-Subscription-Key", "382f5abd65f74494935027f65a41a4bc");
+            xhr.responseType = 'blob';
+            xhr.send('{"url": "https://oxfordportal.blob.core.windows.net/emotion/recognition1.jpg"}');
+       // $.ajax({
+       //      url: "https://api.projectoxford.ai/emotion/v1.0/recognize",
+       //      beforeSend: function(xhrObj){
+       //          // Request headers
+       //          //xhrObj.setRequestHeader("Access-Control-Allow-Origin", "*");
+       //           xhrObj.setRequestHeader("Authorization", "Negotiate");
+       //          //xhrObj.setRequestHeader("Access-Control-Allow-Origin","*");
+       //          xhrObj.setRequestHeader("Content-Type","application/json");
+       //          xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","5ee4b81572a244fe92c92544f83ccc55");
+       //      },
+       //      type: "POST",
+       //      // Request body
+       //       data: '{"url": "http://media0.giphy.com/media/xT5LMJXCtdabV6YYJa/giphy.gif"}',
+       //  })
+       //  .done(function(data) {
+       //      //alert("success");
+       //      console.log(data);
+       //  })
+       //  .fail(function(error) {
+       //    console.log(error);
+       //      //console.log(error.getAllResponseHeaders());
+       //      //alert("fail");
+       //  });
+
 }
 
 
