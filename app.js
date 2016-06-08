@@ -3,6 +3,15 @@ var width = window.innerWidth;
 var height = window.innerHeight;
 var w = window.innerWidth;
 var h = window.innerHeight;
+$('#pic-holder').width = w;
+$('#pic-holder').height = h;
+
+var out_tweet;
+
+  Clarifai.initialize({
+    'clientId': 'ioizwxZOPvNP4j65eGpOHkcmgUhP_qcQUXZeAL5D',
+    'clientSecret': 'S3hmuEd_KtOQYFf0SuU5Bx0SkjKy7EZE_irGeCS3'
+  });
 
 if (window.location.hash) {
     var keyword = window.location.hash.substr(1);
@@ -23,7 +32,10 @@ function draw(){
 
 
 get_tweets = function(){
-   
+  
+  console.log(out_tweet);
+  console.log('get_tweets');
+  out_tweet = "";
         $('#results').html('');
         $('#date').html('');
         $('#profile').html('Loading...');
@@ -94,6 +106,7 @@ var looper = function(words) {
 var extra = "";
 
 searchWord = function(txt){
+  console.log("searchWord: " + txt);
     txt = txt.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
     $('#headline').text(txt);
     jQuery("#headline").fitText(0.9, { maxFontSize: '340px' });
@@ -105,14 +118,19 @@ searchWord = function(txt){
         //console.log(data.data.length);
         if (data.data.length > 0) {
             var looper;
-        console.log(data.data.length);
+        //console.log(data.data.length);
         var rnd = randomInt(data.data.length-1);
         random_img = data.data[rnd];
         //console.log(random_img);
         var img = random_img.images.original.url;
         //console.log(img);
-        img =  '<img src=' + img + ' ">';
-        $('#pic-holder').html(img);
+        //var pic =  '<img src=' + img + ' ">';
+        var pic = 'url("' + img + '"")';
+        //$('body').css('background-url', pic);
+        //$('body').css('background-image', 'url("' + img + '")');
+        $('#pic-holder').css('background-image', 'url(' + img + ')');
+        var pic =  '<img src=' + img + ' " width="100%" height="100%">';
+        //$('#pic-holder').html(pic);
         reverseSearchAPI(img);
         //   $('#pic-holder >img').tailorfit({
         //         maxWidth  : w,
@@ -132,54 +150,80 @@ searchWord = function(txt){
 
 reverseSearchAPI = function(img){
   
-  console.log("reverseSearchAPI");
-
-    // var key = "5ee4b81572a244fe92c92544f83ccc55";
-    var key = "d701e77a5a5f45bb83c3fcb9d53700e1";
+  //console.log("reverseSearchAPI");
+  //console.log(img);
   
-     var xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {
+  Clarifai.getTagsByUrl(img).then(
+  handleResponse,
+  handleError
+);
 
-                console.log(this.response, typeof this.response);
-
-                var response = document.querySelector('#response');
-                var img = new Image();
-                var url = window.URL || window.webkitURL;
-                img.src = url.createObjectURL(this.response);
-                response.appendChild(img);
-              }
-            }
-            xhr.open('POST', 'https://api.projectoxford.ai/vision/v1.0/generateThumbnail?width=5&height=5&smartCropping=true');
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.setRequestHeader("Ocp-Apim-Subscription-Key", "382f5abd65f74494935027f65a41a4bc");
-            xhr.responseType = 'blob';
-            xhr.send('{"url": "https://oxfordportal.blob.core.windows.net/emotion/recognition1.jpg"}');
-       // $.ajax({
-       //      url: "https://api.projectoxford.ai/emotion/v1.0/recognize",
-       //      beforeSend: function(xhrObj){
-       //          // Request headers
-       //          //xhrObj.setRequestHeader("Access-Control-Allow-Origin", "*");
-       //           xhrObj.setRequestHeader("Authorization", "Negotiate");
-       //          //xhrObj.setRequestHeader("Access-Control-Allow-Origin","*");
-       //          xhrObj.setRequestHeader("Content-Type","application/json");
-       //          xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","5ee4b81572a244fe92c92544f83ccc55");
-       //      },
-       //      type: "POST",
-       //      // Request body
-       //       data: '{"url": "http://media0.giphy.com/media/xT5LMJXCtdabV6YYJa/giphy.gif"}',
-       //  })
-       //  .done(function(data) {
-       //      //alert("success");
-       //      console.log(data);
-       //  })
-       //  .fail(function(error) {
-       //    console.log(error);
-       //      //console.log(error.getAllResponseHeaders());
-       //      //alert("fail");
-       //  });
 
 }
+
+function handleResponse(response){
+  //console.log(response);
+  var found = response.results[0]['result']['tag']['classes'][0][0]
+  console.log("found: " + found);
+  out_tweet = found + "";
+}
+
+
+function handleError(response){
+  console.log("error");
+  console.log(response);
+}
+
+// reverseSearchAPI = function(img){
+  
+//   console.log("reverseSearchAPI");
+
+//     // var key = "5ee4b81572a244fe92c92544f83ccc55";
+//     var key = "d701e77a5a5f45bb83c3fcb9d53700e1";
+  
+//      var xhr = new XMLHttpRequest();
+//       xhr.onreadystatechange = function() {
+//               if (this.readyState == 4 && this.status == 200) {
+
+//                 console.log(this.response, typeof this.response);
+
+//                 var response = document.querySelector('#response');
+//                 var img = new Image();
+//                 var url = window.URL || window.webkitURL;
+//                 img.src = url.createObjectURL(this.response);
+//                 response.appendChild(img);
+//               }
+//             }
+//             xhr.open('POST', 'https://api.projectoxford.ai/vision/v1.0/generateThumbnail?width=5&height=5&smartCropping=true');
+//             xhr.setRequestHeader("Content-Type", "application/json");
+//             xhr.setRequestHeader("Ocp-Apim-Subscription-Key", "382f5abd65f74494935027f65a41a4bc");
+//             xhr.responseType = 'blob';
+//             xhr.send('{"url": "https://oxfordportal.blob.core.windows.net/emotion/recognition1.jpg"}');
+//        // $.ajax({
+//        //      url: "https://api.projectoxford.ai/emotion/v1.0/recognize",
+//        //      beforeSend: function(xhrObj){
+//        //          // Request headers
+//        //          //xhrObj.setRequestHeader("Access-Control-Allow-Origin", "*");
+//        //           xhrObj.setRequestHeader("Authorization", "Negotiate");
+//        //          //xhrObj.setRequestHeader("Access-Control-Allow-Origin","*");
+//        //          xhrObj.setRequestHeader("Content-Type","application/json");
+//        //          xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","5ee4b81572a244fe92c92544f83ccc55");
+//        //      },
+//        //      type: "POST",
+//        //      // Request body
+//        //       data: '{"url": "http://media0.giphy.com/media/xT5LMJXCtdabV6YYJa/giphy.gif"}',
+//        //  })
+//        //  .done(function(data) {
+//        //      //alert("success");
+//        //      console.log(data);
+//        //  })
+//        //  .fail(function(error) {
+//        //    console.log(error);
+//        //      //console.log(error.getAllResponseHeaders());
+//        //      //alert("fail");
+//        //  });
+
+// }
 
 
 get_tweets();

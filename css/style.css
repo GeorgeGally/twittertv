@@ -5,6 +5,11 @@ body {
 	margin: 0;
 	padding: 0;	
 	overflow:hidden;
+
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 	}
 
 canvas { border: none; margin: 0;}
@@ -104,6 +109,11 @@ padding: 4%;
 		opacity: 0.8;
 		z-index: 1;
 		text-align: center;
+	}
+
+	#pic-holder img{
+		min-width: 100%;
+		height: 100%;
 	}
 /*
 @media only screen 
