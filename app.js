@@ -1,3 +1,33 @@
+   reverseSearchAPI = function(img){ 
+    console.log(img);
+    var params = {
+        // Request parameters
+        "visualFeatures": "Categories",
+        "visualFeatures": "Description",
+    };
+
+    $.ajax({
+        url: "https://api.projectoxford.ai/vision/v1.0/analyze?" + $.param(params),
+        beforeSend: function(xhrObj){
+            // Request headers
+            xhrObj.setRequestHeader("Content-Type","application/json");
+            xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","5ee4b81572a244fe92c92544f83ccc55");
+        },
+        type: "POST",
+        // Request body
+        data: '{ "url":"'+ img +'"}'
+        //data: '{ "url": "http://newsrescue.com/wp-content/uploads/2015/04/happy-person.jpg"}'
+    })
+    .done(function(data) {
+        console.log(data);
+        //alert("success");
+        handleResponse(data);
+    })
+    .fail(function() {
+        alert("error");
+    });
+};
+
 
 var width = window.innerWidth;
 var height = window.innerHeight;
@@ -19,8 +49,8 @@ if (window.location.hash) {
     var keyword = "love";
 }
 
+// var url = "../../twitterzeitgeist/tweets/she_said/" + keyword;
 var url = "../../socialzeitgeist/tweets/she_said/" + keyword;
-
 
 function draw(){
     if (mouseY > h-100) {
@@ -108,12 +138,13 @@ var extra = "";
 searchWord = function(txt){
   console.log("searchWord: " + txt);
     txt = txt.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
-    $('#headline').text(txt);
-    jQuery("#headline").fitText(0.9, { maxFontSize: '340px' });
+    //$('#headline').text(txt);
+    //jQuery("#headline").fitText(0.9, { maxFontSize: '340px' });
     txt = extra + " " + txt;
     var url = 'http://api.giphy.com/v1/gifs/search?q=' + txt + '&api_key=dc6zaTOxFJmzC';
     $.ajax({
       url: url,  
+
       success:function(data) {
         //console.log(data.data.length);
         if (data.data.length > 0) {
@@ -152,26 +183,29 @@ searchWord = function(txt){
 }
 
 
-reverseSearchAPI2 = function(img){
+// reverseSearchAPI2 = function(img){
   
-  //console.log("reverseSearchAPI");
-  //console.log(img);
+//   //console.log("reverseSearchAPI");
+//   //console.log(img);
   
-  Clarifai.getTagsByUrl(img).then(
-  handleResponse,
-  handleError
-);
+//   Clarifai.getTagsByUrl(img).then(
+//   handleResponse,
+//   handleError
+// );
 
 
-}
+// }
 
 function handleResponse(response){
   //console.log(response);
-  //console.log(response.results[0]['result']['tag']);
-  var tag_length = response.results[0]['result']['tag']['classes'][0].length-1;
-  var found = response.results[0]['result']['tag']['classes'][0][randomInt(tag_length)]
+  console.log(response.description.captions[0]['text']);
+  //var tag_length = response.results[0]['result']['tag']['classes'][0].length-1;
+  //var found = response.results[0]['result']['tag']['classes'][0][randomInt(tag_length)];
+  var found = response.description.captions[0]['text'];
   console.log("found: " + found);
   out_tweet += found + " ";
+  $('#headline').text(found);
+  //jQuery("#headline").fitText(0.9, { maxFontSize: '340px' });
 }
 
 
@@ -184,85 +218,6 @@ function handleError(response){
 
 var preps = ['to', 'and', 'but', 'in', 'the', 'of', 'a', 'i'];
 
-reverseSearchAPI = function(img){
-  
-  console.log("reverseSearchAPI");
-
-    // var key = "5ee4b81572a244fe92c92544f83ccc55";
-    var key = "d701e77a5a5f45bb83c3fcb9d53700e1";
-  
-     // var xhr = new XMLHttpRequest();
-     //  xhr.onreadystatechange = function() {
-     //          if (this.readyState == 4 && this.status == 200) {
-
-     //            console.log(this.response, typeof this.response);
-
-     //            var response = document.querySelector('#response');
-     //            var img = new Image();
-     //            var url = window.URL || window.webkitURL;
-     //            img.src = url.createObjectURL(this.response);
-     //            response.appendChild(img);
-     //          }
-     //        }
-     //        xhr.open('POST', 'https://api.projectoxford.ai/vision/v1.0/generateThumbnail?width=5&height=5&smartCropping=true');
-     //        xhr.setRequestHeader("Content-Type", "application/json");
-     //        xhr.setRequestHeader("Ocp-Apim-Subscription-Key", "382f5abd65f74494935027f65a41a4bc");
-     //        xhr.responseType = 'blob';
-     //        xhr.send('{"url": "https://oxfordportal.blob.core.windows.net/emotion/recognition1.jpg"}');
-       // $.ajax({
-       //      url: "https://api.projectoxford.ai/emotion/v1.0/recognize",
-       //      beforeSend: function(xhrObj){
-       //          // Request headers
-       //          //xhrObj.setRequestHeader("Access-Control-Allow-Origin", "*");
-       //           xhrObj.setRequestHeader("Authorization", "Negotiate");
-       //          //xhrObj.setRequestHeader("Access-Control-Allow-Origin","*");
-       //          xhrObj.setRequestHeader("Content-Type","application/json");
-       //          xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","5ee4b81572a244fe92c92544f83ccc55");
-       //      },
-       //      type: "POST",
-       //      // Request body
-       //       data: '{"url": ' + img + '}',
-       //  })
-       //  .done(function(data) {
-       //      //alert("success");
-       //      console.log(data);
-       //      handleResponse(data)
-       //  })
-       //  .fail(function(error) {
-       //    console.log(error);
-       //      //console.log(error.getAllResponseHeaders());
-       //      //alert("fail");
-       //  });
-
-         $(function() {
-    var params = {
-        // Request parameters
-        "returnFaceId": "true",
-        "returnFaceLandmarks": "false",
-        "returnFaceAttributes": "age",
-    };
-
-    $.ajax({
-        url: "https://api.projectoxford.ai/face/v1.0/detect?" + $.param(params),
-        beforeSend: function(xhrObj){
-            // Request headers
-            xhrObj.setRequestHeader("Content-Type","application/json");
-            xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","5ee4b81572a244fe92c92544f83ccc55");
-        },
-        type: "POST",
-        // Request body
-        data: '{ "url": "http://newsrescue.com/wp-content/uploads/2015/04/happy-person.jpg"}'
-    })
-    .done(function(data) {
-        console.log(data);
-        console.log("success");
-    })
-    .fail(function() {
-       console.log("error");
-    });
-});
-
-}
 
 
 get_tweets();
