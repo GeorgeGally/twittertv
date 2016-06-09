@@ -1,5 +1,5 @@
 body { 
-	background: #fff;
+	background: #f7f7f7;
 	font-family: Helvetica, arial, serif;
 	color: #000; font-size: 16px;
 	margin: 0;
@@ -10,6 +10,8 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  background-repeat: none;
+  background-position: center center;
 	}
 
 canvas { border: none; margin: 0;}

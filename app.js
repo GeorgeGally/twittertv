@@ -6,7 +6,7 @@ var h = window.innerHeight;
 $('#pic-holder').width = w;
 $('#pic-holder').height = h;
 
-var out_tweet;
+var out_tweet ="";
 
   Clarifai.initialize({
     'clientId': 'ioizwxZOPvNP4j65eGpOHkcmgUhP_qcQUXZeAL5D',
@@ -33,7 +33,7 @@ function draw(){
 
 get_tweets = function(){
   
-  console.log(out_tweet);
+  console.log("=========== out_tweet:" + out_tweet);
   console.log('get_tweets');
   out_tweet = "";
         $('#results').html('');
@@ -127,8 +127,12 @@ searchWord = function(txt){
         //var pic =  '<img src=' + img + ' ">';
         var pic = 'url("' + img + '"")';
         //$('body').css('background-url', pic);
-        //$('body').css('background-image', 'url("' + img + '")');
-        $('#pic-holder').css('background-image', 'url(' + img + ')');
+        $('body').css('background-image', 'url("' + img + '")');
+        $('body').css('background-position', 'center center');
+        $('body').css('background-size', 'cover');
+        $('body').css('background-repeat', 'no-repeat');
+        $('body').css('background-attachment', 'fixed');
+        //$('#pic-holder').css('background-image', 'url(' + img + ')');
         var pic =  '<img src=' + img + ' " width="100%" height="100%">';
         //$('#pic-holder').html(pic);
         reverseSearchAPI(img);
@@ -163,9 +167,11 @@ reverseSearchAPI = function(img){
 
 function handleResponse(response){
   //console.log(response);
-  var found = response.results[0]['result']['tag']['classes'][0][0]
+  //console.log(response.results[0]['result']['tag']);
+  var tag_length = response.results[0]['result']['tag']['classes'][0].length-1;
+  var found = response.results[0]['result']['tag']['classes'][0][randomInt(tag_length)]
   console.log("found: " + found);
-  out_tweet = found + "";
+  out_tweet += found + " ";
 }
 
 
@@ -173,6 +179,10 @@ function handleError(response){
   console.log("error");
   console.log(response);
 }
+
+
+
+var preps = ['to', 'and', 'but', 'in', 'the', 'of', 'a', 'i'];
 
 // reverseSearchAPI = function(img){
   
